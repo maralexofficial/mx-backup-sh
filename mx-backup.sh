@@ -46,3 +46,5 @@ tar -czf "$BACKUP_FILE" "${EXCLUDE_ARGS[@]}" "${BACKUP_PATHS[@]}"
 chown "$TARGET_USER:$TARGET_USER" "$BACKUP_FILE"
 
 success "Backup finished: $BACKUP_FILE"
+
+notify "$TITLE_SYNC" "Test" "5" "$TAGS_SYNC"
