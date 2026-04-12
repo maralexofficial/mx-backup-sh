@@ -25,7 +25,7 @@ confirm() {
 }
 
 setup_reply() {
-  local msg="🛠️ [SETUP] [$HOSTNAME] $1"
+  local msg="🛠️ $1"
   echo -e "$msg"
 }
 
