@@ -52,15 +52,17 @@ RC=$?
 if [ $RC -eq 0 ]; then
   chown "$TARGET_USER:$TARGET_USER" "$BACKUP_FILE"
 
-  MSG="Backup job on $HOSTNAME finished: $DATE"
+  MSG="Backup on $HOSTNAME finished: $DATE"
   PRIO="3"
   STATUS="SUCCESS"
   success "$MSG"
 else
-  MSG="Backup job on $HOSTNAME FAILED: $DATE"
+  MSG="Backup on $HOSTNAME FAILED: $DATE"
   PRIO="5"
   STATUS="ERROR"
   error "$MSG"
 fi
+
+info "[$HOSTNAME][$DATE] Backup job done"
 
 notify "$TITLE_SYNC" "$MSG" "$PRIO" "$TAGS_SYNC"
