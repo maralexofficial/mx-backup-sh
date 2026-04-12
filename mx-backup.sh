@@ -38,7 +38,7 @@ chown "$TARGET_USER:$TARGET_USER" "$TARGET_DIR"
 
 source "$SCRIPT_DIR/lib/notifications.sh"
 
-info "[$HOSTNAME][$DATE] Backup job started"
+info "[$HOSTNAME] [$DATE] Backup job started"
 
 EXCLUDE_ARGS=()
 for ex in "${EXCLUDES[@]}"; do
@@ -60,6 +60,6 @@ else
   error "$MSG"
 fi
 
-info "[$HOSTNAME][$DATE] Backup job done"
+info "[$HOSTNAME] [$DATE] Backup job done"
 
 notify "$TITLE_SYNC" "$MSG" "$PRIO" "$TAGS_SYNC"
