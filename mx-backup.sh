@@ -51,15 +51,12 @@ RC=$?
 
 if [ $RC -eq 0 ]; then
   chown "$TARGET_USER:$TARGET_USER" "$BACKUP_FILE"
-
   MSG="Backup on $HOSTNAME finished: $DATE"
   PRIO="3"
-  STATUS="SUCCESS"
   success "$MSG"
 else
   MSG="Backup on $HOSTNAME FAILED: $DATE"
   PRIO="5"
-  STATUS="ERROR"
   error "$MSG"
 fi
 
