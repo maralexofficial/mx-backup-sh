@@ -6,6 +6,21 @@ set -euo pipefail
 
 source "$SCRIPT_DIR/lib/console.sh"
 
+DRY_RUN=0
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+  --dry-run)
+    DRY_RUN=1
+    shift
+    ;;
+  *)
+    error "Unknown argument: $1"
+    exit 1
+    ;;
+  esac
+done
+
 ENV_FILE="$SCRIPT_DIR/.env"
 
 if [ -f "$ENV_FILE" ]; then
@@ -32,23 +47,34 @@ TARGET_DIR="$TARGET_BASE/$TARGET_DIR"
 BACKUP_FILE="$TARGET_DIR/${BACKUP_NAME}_$TIMESTAMP.tar.gz"
 
 mkdir -p "$TARGET_DIR"
-chown "$TARGET_USER:$TARGET_USER" "$TARGET_DIR"
+
+if [ "$DRY_RUN" -eq 0 ]; then
+  chown "$TARGET_USER:$TARGET_USER" "$TARGET_DIR"
+fi
 
 source "$SCRIPT_DIR/lib/notifications.sh"
 
-info "Backup job started"
+info "Backup job started (dry-run=$DRY_RUN)"
 
 EXCLUDE_ARGS=()
 for ex in "${EXCLUDES[@]}"; do
   EXCLUDE_ARGS+=("--exclude=$ex")
 done
 
-tar -czf "$BACKUP_FILE" "${EXCLUDE_ARGS[@]}" "${BACKUP_PATHS[@]}"
-
-RC=$?
+if [ "$DRY_RUN" -eq 1 ]; then
+  info "[DRY-RUN] Would run:"
+  echo "tar -czf \"$BACKUP_FILE\" ${EXCLUDE_ARGS[*]} ${BACKUP_PATHS[*]}"
+  RC=0
+else
+  tar -czf "$BACKUP_FILE" "${EXCLUDE_ARGS[@]}" "${BACKUP_PATHS[@]}"
+  RC=$?
+fi
 
 if [ $RC -eq 0 ]; then
-  chown "$TARGET_USER:$TARGET_USER" "$BACKUP_FILE"
+  if [ "$DRY_RUN" -eq 0 ]; then
+    chown "$TARGET_USER:$TARGET_USER" "$BACKUP_FILE"
+  fi
+
   MSG="Backup on $HOSTNAME finished."
   PRIO="3"
   success "$MSG"
