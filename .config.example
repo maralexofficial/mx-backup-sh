@@ -1,0 +1,13 @@
+TARGET_USER="backupadm"
+TARGET_BASE="/home/backupadm"
+TARGET_DIR="backups/poseidon"
+
+BACKUP_NAME="backup"
+
+BACKUP_PATHS=(
+  "/etc/nginx"
+)
+
+EXCLUDES=(
+  "/etc/nginx/cache"
+)
