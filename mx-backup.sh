@@ -55,7 +55,7 @@ if [ $RC -eq 0 ]; then
   MSG="Backup on $HOSTNAME finished: $DATE"
   PRIO="3"
   STATUS="SUCCESS"
-  success "$MSG"
+  success "$MSG""
 else
   MSG="Backup on $HOSTNAME FAILED: $DATE"
   PRIO="5"
