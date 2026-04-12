@@ -34,7 +34,9 @@ BACKUP_FILE="$TARGET_DIR/${BACKUP_NAME}_$TIMESTAMP.tar.gz"
 mkdir -p "$TARGET_DIR"
 chown "$TARGET_USER:$TARGET_USER" "$TARGET_DIR"
 
-info "Creating backup: $BACKUP_FILE"
+source "$SCRIPT_DIR/lib/notifications.sh"
+
+info "$(date '+%F %T') Backup job started"
 
 EXCLUDE_ARGS=()
 for ex in "${EXCLUDES[@]}"; do
@@ -43,8 +45,20 @@ done
 
 tar -czf "$BACKUP_FILE" "${EXCLUDE_ARGS[@]}" "${BACKUP_PATHS[@]}"
 
-chown "$TARGET_USER:$TARGET_USER" "$BACKUP_FILE"
+RC=$?
 
-success "Backup finished: $BACKUP_FILE"
+if [ $RC -eq 0 ]; then
+  chown "$TARGET_USER:$TARGET_USER" "$BACKUP_FILE"
 
-notify "$TITLE_SYNC" "Test" "5" "$TAGS_SYNC"
+  MSG="Backup job on $(hostname -s) finished: $(date '+%F %T')"
+  PRIO="3"
+  STATUS="SUCCESS"
+  success "$MSG"
+else
+  MSG="Backup job on $(hostname -s) FAILED: $(date '+%F %T')"
+  PRIO="5"
+  STATUS="ERROR"
+  error "$MSG"
+fi
+
+notify "$TITLE_SYNC" "$MSG" "$PRIO" "$TAGS_SYNC"
