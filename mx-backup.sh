@@ -26,9 +26,11 @@ fi
 
 source "$CONFIG"
 
-TARGET_DIR="$TARGET_BASE/$TARGET_DIR"
-
+HOST="$(hostname -s)"
+DATE="$(date '+%F %T')"
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+
+TARGET_DIR="$TARGET_BASE/$TARGET_DIR"
 BACKUP_FILE="$TARGET_DIR/${BACKUP_NAME}_$TIMESTAMP.tar.gz"
 
 mkdir -p "$TARGET_DIR"
@@ -36,7 +38,7 @@ chown "$TARGET_USER:$TARGET_USER" "$TARGET_DIR"
 
 source "$SCRIPT_DIR/lib/notifications.sh"
 
-info "$(date '+%F %T') Backup job started"
+info "[$HOSTNAME][$DATE] Backup job started"
 
 EXCLUDE_ARGS=()
 for ex in "${EXCLUDES[@]}"; do
@@ -50,12 +52,12 @@ RC=$?
 if [ $RC -eq 0 ]; then
   chown "$TARGET_USER:$TARGET_USER" "$BACKUP_FILE"
 
-  MSG="Backup job on $(hostname -s) finished: $(date '+%F %T')"
+  MSG="Backup job on $HOSTNAME finished: $DATE"
   PRIO="3"
   STATUS="SUCCESS"
   success "$MSG"
 else
-  MSG="Backup job on $(hostname -s) FAILED: $(date '+%F %T')"
+  MSG="Backup job on $HOSTNAME FAILED: $DATE"
   PRIO="5"
   STATUS="ERROR"
   error "$MSG"
