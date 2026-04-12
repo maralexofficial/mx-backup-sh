@@ -59,7 +59,7 @@ if [ $RC -eq 0 ]; then
 else
   MSG="Backup on $HOSTNAME FAILED: $DATE"
   PRIO="5"
-  STATUS="ERRORS"
+  STATUS="ERROR"
   error "$MSG"
 fi
 
