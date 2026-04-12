@@ -73,7 +73,7 @@ fi
 if [ $RC -eq 0 ]; then
   if [ "$DRY_RUN" -eq 0 ]; then
     chown "$TARGET_USER:$TARGET_USER" "$BACKUP_FILE"
-  fiii
+  fi
 
   MSG="Backup on $HOSTNAME finished."
   PRIO="3"
