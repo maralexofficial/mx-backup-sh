@@ -62,4 +62,4 @@ fi
 
 info "[$HOSTNAME] [$DATE] Backup job done"
 
-notify "$TITLE_SYNC" "$MSG" "$PRIO" "$TAGS_SYNC"
+notify "[$HOSTNAME] BACKUP JOB" "$MSG" "$PRIO" "$TAGS_SYNC"
