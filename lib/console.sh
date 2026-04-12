@@ -1,5 +1,8 @@
 #!/bin/bash
 
+HOST="$(hostname -s)"
+DATE="$(date '+%F %T')"
+
 RED="\033[0;31m"
 GREEN="\033[0;32m"
 YELLOW="\033[0;33m"
@@ -22,35 +25,35 @@ confirm() {
 }
 
 _write_log() {
-  echo "[$(date '+%F %T')] $1" >>"$LOG_FILE"
+  echo "[$HOSTNAME] [$DATE] $1" >>"$LOG_FILE"
 }
 
 log() {
   local msg="$1"
-  echo "[$(date '+%F %T')] $msg"
+  echo "[$HOSTNAME] [$DATE] $msg"
   _write_log "$msg"
 }
 
 info() {
-  local msg="[INFO] $1"
+  local msg="[INFO] [$HOSTNAME] [$DATE] $1"
   echo -e "${CYAN}$msg${RESET}"
   _write_log "$msg"
 }
 
 success() {
-  local msg="[SUCCESS] $1"
+  local msg="[SUCCESS] [$HOSTNAME] [$DATE] $1"
   echo -e "${GREEN}$msg${RESET}"
   _write_log "$msg"
 }
 
 warn() {
-  local msg="[WARN] $1"
+  local msg="[WARN] [$HOSTNAME] [$DATE] $1"
   echo -e "${YELLOW}$msg${RESET}"
   _write_log "$msg"
 }
 
 error() {
-  local msg="[ERROR] $1"
+  local msg="[ERROR] [$HOSTNAME] [$DATE] $1"
   echo -e "${RED}$msg${RESET}" >&2
   _write_log "$msg"
 }
