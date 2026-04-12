@@ -41,17 +41,26 @@ LOGROTATE_DIR="${HOME}/.config/logrotate"
 CONFIG_FILE="${LOGROTATE_DIR}/mx_backup_sh.conf"
 STATUS_FILE="${LOGROTATE_DIR}/status"
 
+setup_step "Logrotate installation started"
+
 USER_NAME="$(whoami)"
-success "Installing logrotate config for user: $USER_NAME"
+setup_reply "Installing logrotate config for user: $USER_NAME"
+
+setup_step "Preparing directories"
 
 mkdir -p "$LOGROTATE_DIR"
-success "Logrotate directory ready: $LOGROTATE_DIR"
+
+setup_done "Directory ready: $LOGROTATE_DIR"
+setup_step "Checking existing config"
 
 if [ -f "$CONFIG_FILE" ] && [ "${FORCE:-0}" -ne 1 ]; then
     error "Config already exists: $CONFIG_FILE"
     info "Use --force to overwrite"
     exit 1
 fi
+
+setup_done "Config check passed"
+setup_step "Writing logrotate configuration"
 
 cat >"$CONFIG_FILE" <<EOF
 $LOG_DIR/*.log {
@@ -64,11 +73,12 @@ $LOG_DIR/*.log {
 }
 EOF
 
-success "Created logrotate config: $CONFIG_FILE"
+setup_done "Config created: $CONFIG_FILE"
+setup_step "Configuring schedule"
 
-success "Select logrotate schedule:"
-info "1) Daily at 03:00 (default)"
-info "2) Custom"
+setup_reply "Select logrotate schedule:"
+setup_reply "1) Daily at 03:00 (default)"
+setup_reply "2) Custom"
 
 read -r -p "Choice [1]: " CHOICE
 CHOICE="${CHOICE:-1}"
@@ -81,12 +91,13 @@ case "$CHOICE" in
     read -r -p "Enter cron expression (e.g. '*/15 * * * *'): " CRON_SCHEDULE
     ;;
 *)
-    warn "Invalid choice, using default"
+    setup_reply "Invalid choice, using default"
     CRON_SCHEDULE="0 3 * * *"
     ;;
 esac
 
-info "Using cron schedule: $CRON_SCHEDULE"
+setup_done "Schedule set: $CRON_SCHEDULE"
+setup_step "Installing cron job"
 
 CRON_JOB="$CRON_SCHEDULE $LOGROTATE_BIN -s $STATUS_FILE $CONFIG_FILE"
 
@@ -95,9 +106,12 @@ CRON_JOB="$CRON_SCHEDULE $LOGROTATE_BIN -s $STATUS_FILE $CONFIG_FILE"
     echo "$CRON_JOB"
 ) | crontab -
 
-success "Cronjob installed"
+setup_done "Cronjob installed"
+setup_step "Testing logrotate"
 
-info "Running test logrotate..."
 "$LOGROTATE_BIN" -s "$STATUS_FILE" "$CONFIG_FILE"
 
-success "Done ✅"
+setup_done "Test run completed"
+setup_step "Finalizing"
+
+setup_done "Setup complete ✅"
