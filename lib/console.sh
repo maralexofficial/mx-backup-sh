@@ -24,6 +24,19 @@ confirm() {
   esac
 }
 
+setup_reply() {
+  local msg="🛠️ [SETUP] [$HOSTNAME] $1"
+  echo -e "$msg"
+}
+
+setup_step() {
+  echo -e "➡️  $1"
+}
+
+setup_done() {
+  echo -e "✅ $1"
+}
+
 _write_log() {
   echo "[$HOSTNAME] [$DATE] $1" >>"$LOG_FILE"
 }
