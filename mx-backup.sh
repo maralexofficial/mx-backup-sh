@@ -60,4 +60,4 @@ fi
 
 info "Backup job done"
 
-notify "[$HOSTNAME] BACKUP JOB" "$MSG" "$PRIO"
+notify "[$HOSTNAME] BACKUP JOB" "$MSG" "$PRIO" "backup"
