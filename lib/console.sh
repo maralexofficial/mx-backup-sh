@@ -43,7 +43,7 @@ _write_log() {
 
 log() {
   local msg="$1"
-  echo "[$DATE] [$HOSTNAME] $msg"
+  echo "$msg"
   _write_log "$msg"
 }
 
