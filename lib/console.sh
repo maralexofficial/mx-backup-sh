@@ -38,7 +38,7 @@ setup_done() {
 }
 
 _write_log() {
-  echo "[$DATE] [$HOSTNAME] $1" >>"$LOG_FILE"
+  echo "$1" >>"$LOG_FILE"
 }
 
 log() {
