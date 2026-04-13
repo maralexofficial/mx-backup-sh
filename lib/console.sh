@@ -38,35 +38,35 @@ setup_done() {
 }
 
 _write_log() {
-  echo "[$HOSTNAME] [$DATE] $1" >>"$LOG_FILE"
+  echo "[$DATE] [$HOSTNAME] $1" >>"$LOG_FILE"
 }
 
 log() {
   local msg="$1"
-  echo "[$HOSTNAME] [$DATE] $msg"
+  echo "[$DATE] [$HOSTNAME] $msg"
   _write_log "$msg"
 }
 
 info() {
-  local msg="[INFO] [$HOSTNAME] [$DATE] $1"
+  local msg="[INFO] [$DATE] [$HOSTNAME] $1"
   echo -e "${CYAN}$msg${RESET}"
   _write_log "$msg"
 }
 
 success() {
-  local msg="[SUCCESS] [$HOSTNAME] [$DATE] $1"
+  local msg="[SUCCESS] [$DATE] [$HOSTNAME] $1"
   echo -e "${GREEN}$msg${RESET}"
   _write_log "$msg"
 }
 
 warn() {
-  local msg="[WARN] [$HOSTNAME] [$DATE] $1"
+  local msg="[WARN] [$DATE] [$HOSTNAME] $1"
   echo -e "${YELLOW}$msg${RESET}"
   _write_log "$msg"
 }
 
 error() {
-  local msg="[ERROR] [$HOSTNAME] [$DATE] $1"
+  local msg="[ERROR] [$DATE] [$HOSTNAME] $1"
   echo -e "${RED}$msg${RESET}" >&2
   _write_log "$msg"
 }
