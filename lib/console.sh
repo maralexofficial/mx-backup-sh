@@ -48,7 +48,7 @@ log() {
 }
 
 info() {
-  local msg="[$DATE] [$HOSTNAME] [INFO]  $1"
+  local msg="[$DATE] [$HOSTNAME] [INFO] $1"
   echo -e "${CYAN}$msg${RESET}"
   _write_log "$msg"
 }
