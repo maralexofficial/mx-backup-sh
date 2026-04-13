@@ -48,25 +48,25 @@ log() {
 }
 
 info() {
-  local msg="[INFO] [$DATE] [$HOSTNAME] $1"
+  local msg="[$DATE] [$HOSTNAME] [INFO]  $1"
   echo -e "${CYAN}$msg${RESET}"
   _write_log "$msg"
 }
 
 success() {
-  local msg="[SUCCESS] [$DATE] [$HOSTNAME] $1"
+  local msg="[$DATE] [$HOSTNAME] [SUCCESS] $1"
   echo -e "${GREEN}$msg${RESET}"
   _write_log "$msg"
 }
 
 warn() {
-  local msg="[WARN] [$DATE] [$HOSTNAME] $1"
+  local msg="[$DATE] [$HOSTNAME] [WARN] $1"
   echo -e "${YELLOW}$msg${RESET}"
   _write_log "$msg"
 }
 
 error() {
-  local msg="[ERROR] [$DATE] [$HOSTNAME] $1"
+  local msg="[$DATE] [$HOSTNAME] [ERROR] $1"
   echo -e "${RED}$msg${RESET}" >&2
   _write_log "$msg"
 }
